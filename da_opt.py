@@ -64,7 +64,7 @@ def optimise_with_ga(strategy_class, data):
 
     # Run the genetic optimization algorithm
     for gen in range(number_of_generations):
-        # Select and clone the next generation individuals
+        # Select and clone the next generation individuals1
         offspring = list(map(toolbox.clone, toolbox.select(population, len(population))))
         
         # Apply crossover and mutation
