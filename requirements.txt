@@ -1,2 +1,10 @@
 deap
 yfinance
+numpy
+numba
+# cudatoolkit
+torch
+torchaudio
+torchvision
+torchtext
+torchdata

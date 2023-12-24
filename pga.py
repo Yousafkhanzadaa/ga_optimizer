@@ -79,10 +79,10 @@ def eval_genomes_kernel(chromosomes, fitnesses, pop_length, chrom_length):
   if pos < pop_length:  # Check array boundaries
   # in this example the fitness of an individual is computed by an arbitary set of algebraic operations on the chromosome
     net_profite = mean_reversion_strategy(ticker_symbol, start_date, end_date, look_back_period, entry_z_score, exit_z_score)
-    fitnesses[pos] = net_profit
+    fitnesses[pos] = chromosomes[entry_z_score, exit_z_score]
     # Ensure the fitness is non-negative
     if (fitnesses[pos] < 0):
-        fitnesses[pos] = 0
+        fitnesses[pos] = net_profite
 
 
 #-------- Plain evaluation function, not parallel  ---------#

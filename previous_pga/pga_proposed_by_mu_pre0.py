@@ -28,7 +28,7 @@ print(cuda.gpus)
 #-------- Mean Reversion Trading Strategy  ---------#
 def mean_reversion_strategy(ticker, start_date, end_date, look_back_period, entry_z_score, exit_z_score):
     closing_prices = data['Close'].values
-    
+
     # Calculate the moving average and standard deviation based on the look-back period
     moving_avg = np.convolve(closing_prices, np.ones(look_back_period)/look_back_period, mode='valid')
     deviation = closing_prices[look_back_period-1:] - moving_avg
@@ -36,13 +36,13 @@ def mean_reversion_strategy(ticker, start_date, end_date, look_back_period, entr
 
     # Assuming deviation is normally distributed, z_score for each data point is deviation divided by the standard deviation
     z_scores = deviation / standard_deviation
-    
+
     # Trading logic
     in_position = False
     entry_price = 0.0
     total_profit = 0.0
     trades = 0
-    
+
     # Loop through the z_score array
     for i in range(len(z_scores)):
         # Check if not in position and the z_score exceeds entry threshold
@@ -56,7 +56,7 @@ def mean_reversion_strategy(ticker, start_date, end_date, look_back_period, entr
             profit = exit_price - entry_price
             total_profit += profit
             trades += 1
-    
+
     # Calculate performance
     net_profit = total_profit
     profit_per_trade = total_profit / trades if trades > 0 else 0
@@ -79,7 +79,7 @@ def eval_genomes_kernel(chromosomes, fitnesses, pop_length, chrom_length):
   if pos < pop_length:  # Check array boundaries
   # in this example the fitness of an individual is computed by an arbitary set of algebraic operations on the chromosome
     net_profite = mean_reversion_strategy(ticker_symbol, start_date, end_date, look_back_period, entry_z_score, exit_z_score)
-    fitnesses[pos] = net_profit
+    fitnesses[pos] = chromosomes[entry_z_score, exit_z_score]
     # Ensure the fitness is non-negative
     if (fitnesses[pos] < 0):
         fitnesses[pos] = 0
@@ -202,9 +202,9 @@ for i in range(pop_size):
 #   fitnesses = np.zeros(pop_size, dtype=np.float32) #Wipe fitnesses
 
 
-end = time.time()
-print("time elapsed: " + str((end-start)))
-print("First chromosome: " + str(chromosomes[0])) #To show computations were the same between both tests
+# end = time.time()
+# print("time elapsed: " + str((end-start)))
+# print("First chromosome: " + str(chromosomes[0])) #To show computations were the same between both tests
 
 
 #-------- Prepare kernel ---------#

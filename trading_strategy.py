@@ -3,9 +3,9 @@
 # Metadata for parameters that can be optimized.
 
 class TradingStrategy:
-    def __init__(self, **params):
-        self.params = params
-
+    def __init__(self):
+        pass
+    
     def backtest(self, data):
         raise NotImplementedError("Backtesting method must be implemented by strategies")
 
@@ -17,7 +17,7 @@ class TradingStrategy:
 
 class MyStrategy(TradingStrategy):
     
-    def __init__(self, lookback=20, z_entry_threshold=1.0, z_exit_threshold=0.0):
+    def __init__(self, lookback = 10, z_entry_threshold=0.5, z_exit_threshold=1):
         self.lookback = lookback
         self.z_entry_threshold = z_entry_threshold
         self.z_exit_threshold = z_exit_threshold
@@ -44,11 +44,11 @@ class MyStrategy(TradingStrategy):
         position = 0
 
         for i in range(1, len(data)):
-            if data['position'][i] == 1 and cash > 0:  # Buy signal
-                position = cash / data['Close'][i]
-                cash -= position * data['Close'][i]
-            elif data['position'][i] == -1 and position > 0:  # Sell signal
-                cash += position * data['Close'][i]
+            if data['position'].iloc[i] == 1 and cash > 0:  # Buy signal
+                position = cash / data['Close'].iloc[i]
+                cash -= position * data['Close'].iloc[i]
+            elif data['position'].iloc[i] == -1 and position > 0:  # Sell signal
+                cash += position * data['Close'].iloc[i]
                 position = 0
 
         # Calculate final portfolio value after the backtesting period
@@ -61,7 +61,7 @@ class MyStrategy(TradingStrategy):
     @property
     def parameter_ranges(self):
         return {
-            "lookback": (10, 50),  # Lookback period can range from 10 to 50
+            "lookback": (20, 50),  # Lookback period can range from 10 to 50
             "z_entry_threshold": (0.5, 2.0),  # Z-score entry threshold
             "z_exit_threshold": (-0.5, 2.0),  # Z-score exit threshold
         }
